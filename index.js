@@ -38,10 +38,11 @@ let model;
 // we'll use as input to our classifier model.
 async function loadTruncatedMobileNet() {
   const mobilenet = await tf.loadLayersModel(
-      'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
+      'https://raw.githubusercontent.com/mrteera/tfjs-pacman/master/mobilenet_1/model.json');
 
   // Return a model that outputs an internal activation.
-  const layer = mobilenet.getLayer('conv_pw_13_relu');
+  //const layer = mobilenet.getLayer('conv_pw_13_relu');
+  const layer = mobilenet.getLayer('dense_3');
   return tf.model({inputs: mobilenet.inputs, outputs: layer.output});
 }
 
@@ -135,11 +136,12 @@ async function predict() {
 
       // Make a prediction through mobilenet, getting the internal activation of
       // the mobilenet model, i.e., "embeddings" of the input images.
-      const embeddings = truncatedMobileNet.predict(img);
+      //const embeddings = truncatedMobileNet.predict(img);
+      const predictions = truncatedMobileNet.predict(img);
 
       // Make a prediction through our newly-trained model using the embeddings
       // from mobilenet as input.
-      const predictions = model.predict(embeddings);
+      // const predictions = model.predict(embeddings);
 
       // Returns the index with the maximum probability. This number corresponds
       // to the class the model thinks is the most probable given the input.
